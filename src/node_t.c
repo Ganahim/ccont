@@ -59,6 +59,7 @@ void node_append_child(node_t * parent, node_t * child) {
 	assert(child != NULL);
 
 	nodelist_push_back(parent->children, child);
+	child->parent = parent;
 }
 
 

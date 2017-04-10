@@ -33,17 +33,16 @@ typedef struct _NODE_T {
 
 
 
-
-#define nodelist_begin(P)		((P)->rend.next)
-#define nodelist_rbegin(P)		((P)->end.prev)
-#define nodelist_end(P)			(&(P)->end)
-#define nodelist_rend(P)		(&(P)->rend)
-
 typedef struct _NODELIST_T {
 	node_t rend;
 	node_t end;
 	nodelist_callback_t destroy_hook;
 } nodelist_t;
+
+#define nodelist_begin(P)		((P)->rend.next)
+#define nodelist_rbegin(P)		((P)->end.prev)
+#define nodelist_end(P)			(&(P)->end)
+#define nodelist_rend(P)		(&(P)->rend)
 
 
 #endif
