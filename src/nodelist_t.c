@@ -51,7 +51,7 @@ void nodelist_pop_back(nodelist_t * list) {
 	assert(nodelist_end(list) != nodelist_begin(list));
 
 	node_t * temp = nodelist_back(list);
-	link_nodes(temp->prev, temp->next);
+	link_nodes(temp->prev, nodelist_end(list));
 	node_destroy(temp);
 }
 
@@ -62,6 +62,35 @@ node_t * nodelist_back(nodelist_t * list) {
 
 	return nodelist_end(list)->prev;
 }
+
+
+
+
+void nodelist_push_front(nodelist_t * list, node_t * node) {
+	assert(list != NULL);
+	assert(node != NULL);
+
+	link_nodes(node, nodelist_begin(list));
+	link_nodes(nodelist_rend(list), node);
+}
+
+void nodelist_pop_front(nodelist_t * list) {
+	assert(list != NULL);
+
+	node_t * temp = nodelist_front(list);
+	link_nodes(nodelist_rend(list), temp->next);
+	node_destroy(temp);
+}
+
+node_t * nodelist_front(nodelist_t * list) {
+	assert(list != NULL);
+	return nodelist_begin(list);
+}
+
+
+
+
+
 
 
 

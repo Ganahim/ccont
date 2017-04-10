@@ -12,6 +12,10 @@ void nodelist_push_back(nodelist_t * list, node_t * node);
 void nodelist_pop_back(nodelist_t * list);
 node_t * nodelist_back(nodelist_t * list);
 
+void nodelist_push_front(nodelist_t * list, node_t * node);
+void nodelist_pop_front(nodelist_t * list);
+node_t * nodelist_front(nodelist_t * list);
+
 void * nodelist_foreach(nodelist_t * list, node_action_t action, void * arg);
 
 

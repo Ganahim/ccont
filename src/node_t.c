@@ -7,6 +7,7 @@
 
 extern nodelist_t * nodelist_create();
 extern void * nodelist_destroy(nodelist_t * list);
+extern void link_nodes(node_t * p1, node_t * p2);
 
 
 
@@ -23,6 +24,8 @@ node_t * node_create(void * data) {
 	return node;
 }
 
+
+
 void * node_destroy(node_t * node) {
 	assert(node != NULL);
 	FUNC_DEBUG("%s", (char *)node->data);
@@ -36,4 +39,14 @@ void * node_destroy(node_t * node) {
 
 	FREE(node);
 	return r;
+}
+
+/* Detach a node without destroying it */
+void node_detach(node_t * node) {
+	assert(node != NULL);
+	assert(node->prev != NULL);
+	assert(node->next != NULL);
+
+	link_nodes(node->prev, node->next);
+	node->parent = NULL;
 }

@@ -9,4 +9,6 @@ node_t * node_create(void * data);
 void * node_destroy(node_t * node);
 
 
+void node_detach(node_t * node);
+
 #endif
