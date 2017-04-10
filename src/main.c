@@ -6,8 +6,11 @@
 
 
 
-void * f(node_t * node) {
-	printf(">> %s destroyed\n", (char *)node->data);
+void * f1(node_t * node, void * arg) {
+	node_append_child(node, node_create("1"));
+	node_append_child(node, node_create("2"));
+	node_append_child(node, node_create("3"));
+	return NULL;
 }
 
 
@@ -21,26 +24,14 @@ int main()
 {
 	node_t * root = node_create("nigger");
 
-	nodelist_push_back(root->children, node_create("a"));
-	nodelist_push_back(root->children, node_create("b"));
-	nodelist_push_back(root->children, node_create("c"));
+	node_append_child(root, node_create("a"));
+	node_append_child(root, node_create("b"));
+	node_append_child(root, node_create("c"));
 
-	nodelist_push_front(root->children, node_create("wat"));
-	nodelist_push_front(root->children, node_create("kek"));
-	nodelist_push_front(root->children, node_create("lol"));
+	nodelist_foreach(root->children, f1, NULL);
 
 
-	for(node_t * p = nodelist_begin(root->children); p != nodelist_end(root->children); p = p->next) {
-		if(strcmp((char *)p->data, "c") == 0) {
-			node_detach(p);
-			node_destroy(p);
-		}
-	}
-
-
-	nodelist_foreach(root->children, f2, NULL);
-
-
+	node_print(root);
 	node_destroy(root);
 	return 0;
 }
