@@ -22,7 +22,7 @@ void * f2(node_t * node) {
 
 int main()
 {
-	node_t * root = node_create("nigger");
+	node_t * root = node_create("asd");
 
 	node_append_child(root, node_create("a"));
 	node_append_child(root, node_create("b"));
@@ -31,11 +31,7 @@ int main()
 	nodelist_foreach(root->children, f1, NULL);
 
 
-	node_t * x = node_create("x");
-	node_append_child(root, x);
-	printf("%s\n", (char *)x->parent->data);
-
-	// node_print(root);
+	node_print(root);
 	node_destroy(root);
 	return 0;
 }
