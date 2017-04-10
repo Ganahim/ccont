@@ -25,6 +25,7 @@ node_t * node_create(void * data) {
 
 void * node_destroy(node_t * node) {
 	assert(node != NULL);
+	FUNC_DEBUG("%s", (char *)node->data);
 
 	void * r = NULL;
 	if(node->destroy_hook != NULL) {

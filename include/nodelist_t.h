@@ -7,4 +7,16 @@
 nodelist_t * nodelist_create();
 void * nodelist_destroy(nodelist_t * list);
 
+
+void nodelist_push_back(nodelist_t * list, node_t * node);
+void nodelist_pop_back(nodelist_t * list);
+node_t * nodelist_back(nodelist_t * list);
+
+void * nodelist_foreach(nodelist_t * list, node_action_t action, void * arg);
+
+
+/* helper functions */
+void link_nodes(node_t * p1, node_t * p2);
+void unlink_nodes(node_t * p1, node_t * p2);
+
 #endif

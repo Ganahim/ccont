@@ -15,7 +15,7 @@ endif
 
 
 c-source-list := $(wildcard src/*.c)
-get-object-rule = build/$(shell $(CC) -I./include -MM -MG $(1))
+get-object-rule = build/$(shell $(CC) -I./include -MM -MG $(1) | sed 's/\\//g')
 c-object-rules = $(foreach c-src, $(c-source-list), $(eval $(call get-object-rule, $(c-src))))
 
 get-stem = $(notdir $(basename $(1)))
