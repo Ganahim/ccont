@@ -69,7 +69,6 @@ node_t * node_append_child(node_t * parent, node_t * child) {
 
 
 
-
 #ifndef NDEBUG
 #include <stdio.h>
 
