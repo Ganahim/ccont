@@ -6,29 +6,21 @@
 
 
 
-void * f1(node_t * node, void * arg) {
-	node_append_child(node, node_create("1"));
-	node_append_child(node, node_create("2"));
-	node_append_child(node, node_create("3"));
-	return NULL;
-}
-
-
-void * f2(node_t * node) {
-	printf("Destroying %s\n", (char *)node->data);
-	return NULL;
-}
 
 
 int main()
 {
-	node_t * root = node_create("asd");
+	node_t * root = node_create("root");
 
-	node_append_child(root, node_create("a"));
-	node_append_child(root, node_create("b"));
-	node_append_child(root, node_create("c"));
+	node_t * a = node_create("a");
+	node_t * b = node_create("b");
+	node_t * c = node_create("c");
 
-	nodelist_foreach(root->children, f1, NULL);
+
+
+	node_append_child(root, a);
+	node_append_child(root, b);
+	node_append_child(root, c);
 
 
 	node_print(root);

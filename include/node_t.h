@@ -10,7 +10,10 @@ node_t * node_create(void * data);
 void * node_destroy(node_t * node);
 node_t * node_detach(node_t * node);
 
-void node_append_child(node_t * parent, node_t * child);
+node_t * node_append_child(node_t * parent, node_t * child);
+
+
+
 
 
 #ifndef NDEBUG

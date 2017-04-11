@@ -36,7 +36,7 @@ typedef struct _NODE_T {
 typedef struct _NODELIST_T {
 	node_t rend;
 	node_t end;
-	nodelist_callback_t destroy_hook;
+	nodelist_callback_t destroy_hook;	// NOTE: rethink
 } nodelist_t;
 
 #define nodelist_begin(P)		((P)->rend.next)

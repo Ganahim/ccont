@@ -1,0 +1,6 @@
+
+TODO:
+- function for swapping node places
+- copying nodes (shallow & deep)
+- generic recursion functions
+- function to get list of descendants

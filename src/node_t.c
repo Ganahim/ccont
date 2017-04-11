@@ -25,7 +25,7 @@ node_t * node_create(void * data) {
 }
 
 
-
+/* Destroy node, freeing it's resources and those of it's descendants */
 void * node_destroy(node_t * node) {
 	assert(node != NULL);
 	// FUNC_DEBUG("%s", (char *)node->data);
@@ -41,7 +41,7 @@ void * node_destroy(node_t * node) {
 	return r;
 }
 
-/* Detach a node without destroying it */
+/* Detach node without destroying it */
 node_t * node_detach(node_t * node) {
 	assert(node != NULL);
 	assert(node->prev != NULL);
@@ -54,12 +54,14 @@ node_t * node_detach(node_t * node) {
 
 
 
-void node_append_child(node_t * parent, node_t * child) {
+/* Make child a subnode of parent. If successful, parent will own child and all of it's descendants. */
+node_t * node_append_child(node_t * parent, node_t * child) {
 	assert(parent != NULL);
 	assert(child != NULL);
 
 	nodelist_push_back(parent->children, child);
 	child->parent = parent;
+	return child;
 }
 
 
