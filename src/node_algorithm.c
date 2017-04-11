@@ -2,7 +2,14 @@
 #include <node_algorithm.h>
 
 
+void * node_traverse(node_t * node, node_traverse_action_t action, void * arg, size_t flags) {
+	assert(node != NULL);
+	assert(action != NULL);
+	
+}
 
+
+/* Depth-first, pre-order, left-right traversal */
 void * node_traverse_dflr_pre(node_t * node, node_traverse_action_t action, void * arg) {
 	assert(node != NULL);
 	assert(action != NULL);

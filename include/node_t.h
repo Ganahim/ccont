@@ -10,10 +10,15 @@ node_t * node_create(void * data);
 void * node_destroy(node_t * node);
 node_t * node_detach(node_t * node);
 
+
 node_t * node_append_child(node_t * parent, node_t * child);
+node_t * node_affix_child(node_t * parent, node_t * child);
+node_t * node_attach_before(node_t * node1, node_t * node2);
+// TODO: node_attach_after
 
 
-
+node_t * node_copy(node_t * a);
+void node_swap(node_t * a, node_t * b);
 
 
 #ifndef NDEBUG

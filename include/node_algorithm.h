@@ -7,11 +7,12 @@
 
 
 
-#define NODE_TRAVERSE_DF 	0b000000
-#define NODE_TRAVERSE_BF 	0b000001
-#define NODE_TRAVERSE_PRE	0b000000
-#define NODE_TRAVERSE_POST	0b000010
-#define NODE_TRAVERSE_
+#define NODE_TRAVERSE_DFLR 	0b000000
+#define NODE_TRAVERSE_DFRL 	0b000001
+#define NODE_TRAVERSE_BFLR		0b000010
+#define NODE_TRAVERSE_BFRL		0b000011
+#define NODE_TRAVERSE_PRE		0b000000
+#define NODE_TRAVERSE_POST		0b000100
 
 
 void * node_traverse(node_t * node, node_traverse_action_t action, void * arg, size_t flags);
