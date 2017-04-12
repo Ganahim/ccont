@@ -1,5 +1,5 @@
 
-REQUIRES :=
+REQUIRES := libcurl
 CC := gcc
 CFLAGS := -std=c11 -I./include
 LDLIBS :=

@@ -118,12 +118,42 @@ void node_swap(node_t * a, node_t * b) {
 	node_t * a_parent = a->parent;
 	node_t * b_parent = b->parent;
 
+	node_t * a_next = a->next;
 	node_t * b_next = b->next;
-	node_attach_before(a->next, node_detach(b))->parent = a_parent;
-	node_attach_before(b_next, node_detach(a))->parent = b_parent;
 
+	if(a->next == b) {
+		node_attach_before(a, node_detach(b));
+	}
+	else if(b->next == a) {
+		node_attach_before(b, node_detach(a));
+	}
+	else {
+		node_attach_before(a, node_detach(b));
+		node_attach_before(b_next, node_detach(a));
+	}
 
+	a->parent = b_parent;
+	b->parent = a_parent;
 }
+
+
+
+
+
+
+node_t * node_find_root(node_t * node) {
+	assert(node != NULL);
+
+	node_t * p = node;
+	while(p->parent != NULL)
+		p = p->parent;
+
+	return p;
+}
+
+
+
+
 
 
 
