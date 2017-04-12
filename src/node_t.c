@@ -69,9 +69,6 @@ node_t * node_append_child(node_t * parent, node_t * child) {
 
 
 
-
-
-
 /* Same as above, but add to front */
 node_t * node_affix_child(node_t * parent, node_t * child) {
 	assert(parent != NULL);
@@ -83,7 +80,8 @@ node_t * node_affix_child(node_t * parent, node_t * child) {
 }
 
 
-/* Attach node2 before node1, taking the place of node1 and increasing the length of the list.
+
+/* Insert node2 before node1, taking the place of node1 and increasing the length of the list.
 	node1 must be in a nodelist.
 */
 node_t * node_attach_before(node_t * node1, node_t * node2) {
@@ -96,6 +94,18 @@ node_t * node_attach_before(node_t * node1, node_t * node2) {
 
 	return node2;
 }
+
+node_t * node_attach_after(node_t * node1, node_t * node2) {
+	assert(node1);
+	assert(node2);
+
+	link_nodes(node2, node1->next);
+	link_nodes(node1, node2);
+	node2->parent = node1->parent;
+
+	return node2;
+}
+
 
 
 
@@ -158,25 +168,25 @@ node_t * node_find_root(node_t * node) {
 
 
 
-
-#ifndef NDEBUG
-#include <stdio.h>
-
-void node_print(node_t * node) {
-	assert(node != NULL);
-	_node_print(node, 0);
-}
-
-void _node_print(node_t * node, size_t level) {
-	assert(node != NULL);
-
-	for(size_t i = 0; i < level; i++)
-		printf("  ");
-
-	printf("%s\n", (char *)node->data);
-
-	for(node_t * p = nodelist_begin(node->children); p != nodelist_end(node->children); p = p->next) {
-		_node_print(p, level + 1);
-	}
-}
-#endif
+//
+// #ifndef NDEBUG
+// #include <stdio.h>
+//
+// void node_print(node_t * node) {
+// 	assert(node != NULL);
+// 	_node_print(node, 0);
+// }
+//
+// void _node_print(node_t * node, size_t level) {
+// 	assert(node != NULL);
+//
+// 	for(size_t i = 0; i < level; i++)
+// 		printf("  ");
+//
+// 	printf("%s\n", (char *)node->data);
+//
+// 	for(node_t * p = nodelist_begin(node->children); p != nodelist_end(node->children); p = p->next) {
+// 		_node_print(p, level + 1);
+// 	}
+// }
+// #endif
