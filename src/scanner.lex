@@ -49,7 +49,9 @@ enum {
 	TOK_CONTINUE,
 	TOK_RETURN,
 	TOK_TRUE,
-	TOK_FALSE
+	TOK_FALSE,
+
+	TOK_DEBUG
 };
 
 

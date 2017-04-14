@@ -24,10 +24,5 @@ void node_swap(node_t * a, node_t * b);
 
 node_t * node_find_root(node_t * node);
 
-//
-// #ifndef NDEBUG
-// void node_print(node_t * node);
-// void _node_print(node_t * node, size_t level);
-// #endif
 
 #endif

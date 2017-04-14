@@ -6,14 +6,6 @@
 #include <nodelist_t.h>
 
 
-// extern nodelist_t * nodelist_create();
-// extern void * nodelist_destroy(nodelist_t * list);
-// extern void link_nodes(node_t * p1, node_t * p2);
-// extern void nodelist_push_back(nodelist_t * list, node_t * node);
-
-
-
-
 
 node_t * node_create(void * data) {
 	node_t * node = ALLOC(sizeof(node_t));
@@ -160,33 +152,3 @@ node_t * node_find_root(node_t * node) {
 
 	return p;
 }
-
-
-
-
-
-
-
-
-//
-// #ifndef NDEBUG
-// #include <stdio.h>
-//
-// void node_print(node_t * node) {
-// 	assert(node != NULL);
-// 	_node_print(node, 0);
-// }
-//
-// void _node_print(node_t * node, size_t level) {
-// 	assert(node != NULL);
-//
-// 	for(size_t i = 0; i < level; i++)
-// 		printf("  ");
-//
-// 	printf("%s\n", (char *)node->data);
-//
-// 	for(node_t * p = nodelist_begin(node->children); p != nodelist_end(node->children); p = p->next) {
-// 		_node_print(p, level + 1);
-// 	}
-// }
-// #endif
