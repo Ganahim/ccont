@@ -1,10 +1,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
+
 #include <nodelist_t.h>
+#include <node_t.h>
 
 
-extern void * node_destroy(node_t * node);
+// extern void * node_destroy(node_t * node);
 
 
 
@@ -33,6 +35,7 @@ void * nodelist_destroy(nodelist_t * list) {
 	FREE(list);
 	return r;
 }
+
 
 
 
@@ -90,6 +93,36 @@ node_t * nodelist_front(nodelist_t * list) {
 
 
 
+/* Append the nodes of l2 at the end of l1, changing their parents that of l1. */
+nodelist_t * nodelist_join(nodelist_t * l1, nodelist_t * l2) {
+	assert(l1 != NULL);
+	assert(l2 != NULL);
+
+	while(nodelist_begin(l2) != nodelist_end(l2)) {
+		node_t * p = node_detach(nodelist_front(l2));
+		p->parent = nodelist_parent(l1);
+		nodelist_push_back(l1, p);
+	}
+
+	nodelist_destroy(l2);
+
+	return l1;
+}
+
+
+/* - Return a shallow copy of list.
+	- See 'node_copy()' in file 'node_t.c' for more details. */
+nodelist_t * nodelist_copy(nodelist_t * src) {
+	assert(src != NULL);
+
+	nodelist_t * dest = nodelist_create();
+
+	for(node_t * p = nodelist_begin(src); p != nodelist_end(src); p = p->next) {
+		nodelist_push_back(dest, node_copy(p));
+	}
+
+	return dest;
+}
 
 
 

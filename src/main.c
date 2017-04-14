@@ -41,9 +41,21 @@ int main()
 	node_t * g = node_append_child(root, node_create("g"));
 
 
+	nodelist_t * l1 = node_detach_range(e, g->next);
+	node_t * root2 = node_create("root2");
+	nodelist_join(root2->children, l1);
+	node_append_child(a, root2);
+	node_t * x = node_copy(root);
+
+
 
 
 	node_traverse_dflr_pre(root, print_node, NULL);
+	putchar('\n');
+	node_traverse_dflr_pre(x, print_node, NULL);
+
+
 	node_destroy(root);
+	node_destroy(x);
 	return 0;
 }

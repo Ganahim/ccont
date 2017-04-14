@@ -6,12 +6,25 @@
 #include <nodelist_t.h>
 
 
+#ifndef NDEBUG
+	int gNodeCount = 0;
+	int gNodeCountPeak = 0;
+#endif
+
+
+
+
+
 
 node_t * node_create(void * data) {
+	incNodeCount();
+
 	node_t * node = ALLOC(sizeof(node_t));
 	memset(node, 0, sizeof(node_t));
 
 	node->children = nodelist_create();
+	node->children->rend.parent = node;
+	node->children->end.parent = node;
 	node->data = data;
 
 	return node;
@@ -21,7 +34,7 @@ node_t * node_create(void * data) {
 /* Destroy node, freeing it's resources and those of it's descendants */
 void * node_destroy(node_t * node) {
 	assert(node != NULL);
-	// FUNC_DEBUG("%s", (char *)node->data);
+	decNodeCount();
 
 	void * r = NULL;
 	if(node->destroy_hook != NULL) {
@@ -45,6 +58,27 @@ node_t * node_detach(node_t * node) {
 	node->prev = NULL;
 	node->next = NULL;
 	return node;
+}
+
+
+/* - Detach a range of nodes from their list, starting from begin and up to but not including end.
+	- begin and end shall have the same parent, and begin shall appear before end in the list.
+	- If either begin or end is an orphan, the behavior is undefined.
+	- If the call is successful, a new list containing the specified range of nodes is returned.
+	- The caller is responsible for destroying the returned list. */
+nodelist_t * node_detach_range(node_t * begin, node_t * end) {
+	assert(begin != NULL);
+	assert(end != NULL);
+	assert(begin->parent == end->parent);
+
+	node_t * rend = begin->prev;
+	nodelist_t * l = nodelist_create();
+
+	while(rend->next != end) {
+		nodelist_push_back(l, node_detach(rend->next));
+	}
+
+	return l;
 }
 
 
@@ -101,13 +135,20 @@ node_t * node_attach_after(node_t * node1, node_t * node2) {
 
 
 
-/* Shallow copy */
-node_t * node_copy(node_t * node) {
-	assert(node != NULL);
+/* - Return a shallow copy of node.
+	- The 'data' member of the returned node will point to the same resource as src.
+	- */
+node_t * node_copy(node_t * src) {
+	assert(src != NULL);
+	incNodeCount();
 
-	node_t * p = ALLOC(sizeof(node_t));
-	memcpy(p, node, sizeof(node_t));
-	return p;
+	node_t * dest = ALLOC(sizeof(node_t));
+	memset(dest, 0, sizeof(node_t));
+
+	dest->children = nodelist_copy(src->children);
+	dest->data = src->data;
+
+	return dest;
 }
 
 
@@ -137,8 +178,6 @@ void node_swap(node_t * a, node_t * b) {
 	a->parent = b_parent;
 	b->parent = a_parent;
 }
-
-
 
 
 

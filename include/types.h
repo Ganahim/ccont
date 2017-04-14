@@ -31,6 +31,7 @@ typedef struct _NODE_T {
 	struct _NODELIST_T * children;
 	void * data;
 	node_callback_t destroy_hook;
+	node_callback_t copy_hook;
 } node_t;
 
 
@@ -46,6 +47,7 @@ typedef struct _NODELIST_T {
 #define nodelist_rbegin(P)		((P)->end.prev)
 #define nodelist_end(P)			(&(P)->end)
 #define nodelist_rend(P)		(&(P)->rend)
+#define nodelist_parent(P)		((P)->end.parent)
 
 
 #endif
