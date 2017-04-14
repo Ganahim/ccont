@@ -4,6 +4,7 @@
 
 #include <node_t.h>
 #include <nodelist_t.h>
+#include <node_algorithm.h>
 
 
 #ifndef NDEBUG
@@ -190,4 +191,46 @@ node_t * node_find_root(node_t * node) {
 		p = p->parent;
 
 	return p;
+}
+
+
+
+
+
+typedef struct {
+	node_search_predicate_t pred;
+	void * arg;
+	nodelist_t * list;
+} pred_container_t;
+
+
+void * _pred_wrapper(node_t * node, void * arg, size_t level) {
+	assert(node != NULL);
+	assert(arg != NULL);
+
+	pred_container_t * cont = arg;
+
+	if(cont->pred(node, cont->arg) != 0) {
+		nodelist_push_back(cont->list, node_copy(node));
+	}
+
+	return NULL;
+}
+
+
+nodelist_t * node_search(node_t * node, node_search_predicate_t pred, void * arg) {
+	assert(node != NULL);
+	assert(pred != NULL);
+
+	nodelist_t * l = nodelist_create();
+
+	pred_container_t * cont = ALLOC(sizeof(pred_container_t));
+	cont->pred = pred;
+	cont->arg = arg;
+	cont->list = l;
+
+	node_traverse_dflr_pre(node, _pred_wrapper, cont);
+	FREE(cont);
+
+	return l;
 }

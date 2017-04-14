@@ -10,6 +10,24 @@
 #include <node_algorithm.h>
 #include <test.h>
 
+void * print_node(node_t * node, void * arg, size_t level);
+int get_nodes(node_t * node, void * vp);
+
+
+int main()
+{
+	node_t * root = node_create("root");
+
+
+	node_traverse_dflr_pre(root, print_node, NULL);
+	node_destroy(root);
+	return 0;
+}
+
+
+
+
+
 
 void * print_node(node_t * node, void * arg, size_t level) {
 	assert(node != NULL);
@@ -27,35 +45,17 @@ void * print_node(node_t * node, void * arg, size_t level) {
 }
 
 
+int get_nodes(node_t * node, void * vp) {
+	assert(node != NULL);
+	assert(vp != NULL);
+	assert(node->data != NULL);
 
-int main()
-{
-	node_t * root = node_create("root");
+	char * s1 = node->data;
+	char * s2 = vp;
 
-	node_t * a = node_append_child(root, node_create("a"));
-	node_t * b = node_append_child(root, node_create("b"));
-	node_t * c = node_append_child(root, node_create("c"));
-	node_t * d = node_append_child(root, node_create("d"));
-	node_t * e = node_append_child(root, node_create("e"));
-	node_t * f = node_append_child(root, node_create("f"));
-	node_t * g = node_append_child(root, node_create("g"));
+	if(strstr(s1, s2))
+		return 1;
 
 
-	nodelist_t * l1 = node_detach_range(e, g->next);
-	node_t * root2 = node_create("root2");
-	nodelist_join(root2->children, l1);
-	node_append_child(a, root2);
-	node_t * x = node_copy(root);
-
-
-
-
-	node_traverse_dflr_pre(root, print_node, NULL);
-	putchar('\n');
-	node_traverse_dflr_pre(x, print_node, NULL);
-
-
-	node_destroy(root);
-	node_destroy(x);
 	return 0;
 }

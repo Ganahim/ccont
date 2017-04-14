@@ -26,6 +26,9 @@ void node_swap(node_t * a, node_t * b);
 node_t * node_find_root(node_t * node);
 
 
+nodelist_t * node_search(node_t * node, node_search_predicate_t pred, void * arg);
+
+
 
 
 

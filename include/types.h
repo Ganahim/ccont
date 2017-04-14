@@ -21,6 +21,7 @@ typedef void * (*node_callback_t)(struct _NODE_T *);
 typedef void * (*nodelist_callback_t)(struct _NODELIST_T *);
 typedef void * (*node_action_t)(struct _NODE_T *, void *);
 typedef void * (*node_traverse_action_t)(struct _NODE_T *, void *, size_t level);
+typedef int (*node_search_predicate_t)(struct _NODE_T *, void *);
 
 
 
