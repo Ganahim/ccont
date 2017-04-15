@@ -9,15 +9,23 @@ typedef size_t resource_handle_t;
 struct _RESOURCE_T;
 
 
+/* Pointer to the null entry */
 extern struct _RESOURCE_T * GRTBegin;
+
+/* Pointer to the past-end entry */
 extern struct _RESOURCE_T * GRTEnd;
+
+/* The next ID to be assigned */
 extern resource_handle_t GRTNextID;
+
+/* The ID of the most recently freed entry */
+extern resource_handle_t GRTLastFreed;
 
 /* Number of bytes currently reserved for GRT */
 extern size_t GRTCapacity;
 
 /* Page size */
-#define PAGESIZE 4096
+#define INITIAL_SIZE 4096
 
 /* Number of entries currently in use */
 #define GRTEntryCount()		(GRTEnd - GRTBegin)
@@ -33,9 +41,11 @@ extern size_t GRTCapacity;
 #define GRTNeedMore()		(GRTUnused() < sizeof(struct _RESOURCE_T))
 
 /* Return nonzero if reallocation to a smaller size is desirable */
-#define GRTNeedLess()		(GRTUnused() >= PAGESIZE)
+#define GRTNeedLess()		(GRTUnused() >= INITIAL_SIZE)
 
 
+
+#define DEBUG_RESOURCE(P)	fprintf(stderr, "id: %zu\nref_count: %zu\ndata_len: %zu\n\n", (P)->id, (P)->ref_count, (P)->data_len)
 
 typedef struct _RESOURCE_T {
 	resource_handle_t id;
@@ -51,8 +61,11 @@ int init_global_resource_table();
 
 resource_handle_t resource_create(size_t len);
 resource_t * resource_get(resource_handle_t res);
+void * resource_get_data(resource_handle_t res);
 
 int resource_destroy(resource_handle_t res);
 
 
+void print_grt();
+void print_reuse_stack();
 #endif
