@@ -1,8 +1,8 @@
 
 TODO:
-- function for swapping node places
+- function for swapping node places				X
 - copying nodes (shallow & deep)
-- generic recursion functions
+- generic recursion functions						X
 - function to get list of descendants
 - 'rotate' children
 - replace range

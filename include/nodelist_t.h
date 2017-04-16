@@ -18,6 +18,7 @@ node_t * nodelist_front(nodelist_t * list);
 
 nodelist_t * nodelist_join(nodelist_t * l1, nodelist_t * l2);
 nodelist_t * nodelist_copy(nodelist_t * src);
+nodelist_t * nodelist_copy_deep(nodelist_t * src);
 
 
 void * nodelist_foreach(nodelist_t * list, node_action_t action, void * arg);

@@ -126,6 +126,19 @@ nodelist_t * nodelist_copy(nodelist_t * src) {
 
 
 
+nodelist_t * nodelist_copy_deep(nodelist_t * src) {
+	assert(src != NULL);
+
+	nodelist_t * dest = nodelist_create();
+
+	for(node_t * p = nodelist_begin(src); p != nodelist_end(src); p = p->next) {
+		nodelist_push_back(dest, node_copy_deep(p));
+	}
+
+	return dest;
+}
+
+
 
 void * nodelist_foreach(nodelist_t * list, node_action_t action, void * arg) {
 	assert(list != NULL);

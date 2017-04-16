@@ -153,6 +153,31 @@ node_t * node_copy(node_t * src) {
 }
 
 
+node_t * node_copy_deep(node_t * src) {
+	assert(src != NULL);
+	incNodeCount();
+
+	node_t * dest = ALLOC(sizeof(node_t));
+	memset(dest, 0, sizeof(node_t));
+
+	dest->children = nodelist_copy_deep(src->children);
+
+	/* If src has a copy hook, do a deep copy. If not, simply shallow copy as a fallback. */
+	if(src->copy_hook != NULL) {
+		node_copy_hook_t hook = (node_copy_hook_t)src->copy_hook;
+		hook(dest, src);
+
+		dest->destroy_hook = src->destroy_hook;
+		dest->copy_hook = src->copy_hook;
+	}
+	else {
+		dest->data = src->data;
+	}
+
+	return dest;
+}
+
+
 void node_swap(node_t * a, node_t * b) {
 	assert(a != NULL);
 	assert(b != NULL);
