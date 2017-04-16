@@ -6,10 +6,8 @@
 #include <stdint.h>
 #include <debug.h>
 
-#include <node_t.h>
-#include <nodelist_t.h>
-#include <node_algorithm.h>
-#include <node_ext.h>
+#include <node.h>
+#include <string_t.h>
 
 
 void * print_node(node_t * node, void * arg, size_t level);
@@ -18,19 +16,16 @@ void * print_node(node_t * node, void * arg, size_t level);
 
 int main()
 {
+	string_t * s = string_new("abcd");
 
+	string_resize(s, 6);
+
+
+
+	string_debug(s);
+	string_delete(s);
 	return 0;
 }
-
-
-
-
-
-
-
-
-
-
 
 
 

@@ -2,13 +2,7 @@
 #define _CONTAINER_TYPES_H
 
 #include <stddef.h>
-
-#ifndef ALLOC
-#	define ALLOC(...)		malloc(__VA_ARGS__)
-#endif
-#ifndef FREE
-#	define FREE(...)		free(__VA_ARGS__)
-#endif
+#include <containers_common.h>
 
 
 
