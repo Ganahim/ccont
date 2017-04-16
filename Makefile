@@ -25,7 +25,7 @@ get-object-rule = build/$(shell $(CC) -I./include -MM -MG $(1) | sed 's/\\//g')
 c-source-list := $(wildcard src/*.c)
 c-object-rules = $(foreach c-src, $(c-source-list), $(eval $(call get-object-rule, $(c-src))))
 c-stems := $(call get-stem, $(c-source-list))
-c-object-list := build/scanner.o $(addprefix build/, $(addsuffix .o, $(c-stems)))
+c-object-list := $(addprefix build/, $(addsuffix .o, $(c-stems)))
 
 
 build/%.o: src/%.c
