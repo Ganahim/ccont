@@ -1,7 +1,7 @@
 #ifndef _NODE_ALGORITHM_H
 #define _NODE_ALGORITHM_H
 
-#include <types.h>
+#include <node_types.h>
 #include <node_t.h>
 #include <nodelist_t.h>
 

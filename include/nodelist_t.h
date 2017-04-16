@@ -1,7 +1,7 @@
 #ifndef _NODELIST_T_H
 #define _NODELIST_T_H
 
-#include <types.h>
+#include <node_types.h>
 
 
 nodelist_t * nodelist_create();

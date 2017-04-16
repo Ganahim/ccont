@@ -3,7 +3,7 @@
 
 #include <debug.h>
 #include <stddef.h>
-#include <types.h>
+#include <node_types.h>
 
 
 node_t * node_create(void * data);
@@ -16,9 +16,6 @@ node_t * node_append_child(node_t * parent, node_t * child);
 node_t * node_affix_child(node_t * parent, node_t * child);
 node_t * node_attach_before(node_t * node1, node_t * node2);
 node_t * node_attach_after(node_t * node1, node_t * node2);
-
-
-
 
 
 node_t * node_copy(node_t * src);

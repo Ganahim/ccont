@@ -18,7 +18,10 @@ libname-base := containers
 libname-shared := lib$(libname-base).so
 libname-static := lib$(libname-base).a
 
-c-source-files := $(wildcard src/*.c)
+
+# c-source-ignore := src/main.c
+
+c-source-files := $(subst src/main.c,,$(wildcard src/*.c))
 c-source-stems := $(notdir $(basename $(c-source-files)))
 c-object-files := $(foreach stem, $(c-source-stems), build/$(stem).o)
 
@@ -34,7 +37,7 @@ includedir 	:= $(prefix)/include/$(libname-base)
 libdir 		:= $(exec_prefix)/lib
 
 # nonstandard
-libversion	:= 0.1.0
+libversion	:= 0.0.1
 
 
 define pkgconfig-file :=
@@ -83,7 +86,6 @@ build/%.o: src/%.c
 	$(CC) $(CFLAGS) $(OBJFLAGS) $< -o $@
 
 #----------------------------------------------------------------------------------------------
-# Rules
 all: lib/$(libname-shared) lib/$(libname-static)
 
 lib/$(libname-shared): $(c-object-files)
@@ -98,7 +100,7 @@ $(c-object-rules)
 
 
 #----------------------------------------------------------------------------------------------
-.PHONY: clean install uninstall purge debug
+.PHONY: clean install uninstall debug
 
 install:
 	mkdir -p $(libdir) $(includedir)
@@ -118,4 +120,5 @@ clean:
 	rm -f build/*.o lib/lib*.a lib/lib*.so*
 
 debug:
-	$(file >$(libname-base).pc,$(pkgconfig-file))
+	@echo $(c-source-files)
+	@echo $(patsubst src/main.c,,$(c-source-files))
