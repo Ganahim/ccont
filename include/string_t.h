@@ -12,7 +12,7 @@
 
 
 
-#define MIN_CAPACITY 32
+#define MIN_CAPACITY 256
 
 #define string_begin(P)			((P)->begin)
 #define string_end(P)			((P)->begin + (P)->size)
@@ -28,19 +28,31 @@ typedef struct _STRING_T {
 	char * begin;
 	size_t size;
 	size_t capacity;
-	char fill;
 } string_t;
+
+
+typedef struct _STRING_SPLIT_RESULT_T {
+	string_t * left;
+	string_t * delim;
+	string_t * right;
+} string_split_result_t;
+
 
 
 string_t * string_new(const char * str);
 string_t * string_new_empty();
 void string_delete(string_t * s);
 
-void string_resize(string_t * s, size_t n);
+void string_resize(string_t * s, size_t n, char fill);
 
+string_t * string_append(string_t * dest, string_t * src);
 string_t * string_append_sz(string_t * s, const char * sz);
 string_t * string_append_sz_n(string_t * s, const char * sz, size_t n);
 string_t * string_substr(const string_t * s, size_t index, size_t len);
+
+
+string_t * string_erase(string_t * s, size_t index, size_t len);
+string_t * string_insert(string_t * dest, size_t index, string_t * src);
 
 
 

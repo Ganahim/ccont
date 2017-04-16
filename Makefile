@@ -5,7 +5,7 @@
 
 REQUIRES :=
 CC := gcc
-CFLAGS := -std=c11 -I./include -I./build -Wno-format
+CFLAGS := -std=c11 -I./include -I./build
 LDLIBS :=
 LDFLAGS :=
 PROGRAM := test

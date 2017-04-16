@@ -28,12 +28,13 @@ string_t * string_new(const char * str) {
 	s->begin = ALLOC(s->capacity);
 	s->begin++;
 	memcpy(string_begin(s), str, s->size);
-	*string_end(s) = 0;
 
-	s->fill = ' ';
+	*string_end(s) = 0;
+	*string_rend(s) = 0;
 
 	return s;
 }
+
 
 string_t * string_new_empty() {
 	string_t * s = ALLOC(sizeof(string_t));
@@ -61,14 +62,14 @@ void string_delete(string_t * s) {
 
 
 
-void string_resize(string_t * s, size_t n) {
+void string_resize(string_t * s, size_t n, char fill) {
 	assert(s != NULL);
 
 	if(n > s->size) {
 		while(n > string_unused(s))
 			string_upscale(s);
 
-		memset(string_end(s), s->fill, ABSDIFF(s->size, n));
+		memset(string_end(s), fill, (n - s->size));
 	}
 	else {
 		while((((s->capacity >> 1) - 2) >= n) && ((s->capacity >> 1) >= MIN_CAPACITY))
@@ -79,6 +80,13 @@ void string_resize(string_t * s, size_t n) {
 	*string_end(s) = 0;
 }
 
+
+string_t * string_append(string_t * dest, string_t * src) {
+	assert(dest != NULL);
+	assert(src != NULL);
+
+	return string_append_sz(dest, string_begin(src));
+}
 
 
 string_t * string_append_sz(string_t * s, const char * sz) {
@@ -123,14 +131,45 @@ string_t * string_append_sz_n(string_t * s, const char * sz, size_t n) {
 
 string_t * string_substr(const string_t * s, size_t index, size_t len) {
 	assert(s != NULL);
-	assert((index + len) < s->size);
+	assert((index + len) <= s->size);
 
-	string_t * s1 = string_new_empty();
+	string_t * d = string_new_empty();
+	string_resize(d, len, 0);
 
+	memcpy(string_begin(d), (string_begin(s) + index), len);
+	return d;
 }
 
 
 
+string_t * string_erase(string_t * s, size_t index, size_t len) {
+	assert(s != NULL);
+	assert((index + len) <= s->size);
+
+	size_t endsize = (s->size - (index + len));
+	memmove((string_begin(s) + index), (string_begin(s) + (index + len)), endsize);
+	string_resize(s, (s->size - len), 0);
+
+	return s;
+}
+
+
+string_t * string_insert(string_t * dest, size_t index, string_t * src) {
+	assert(dest != NULL);
+
+	size_t endsize = dest->size - index;
+
+	string_resize(dest, dest->size + src->size, ' ');
+	memmove(
+		string_begin(dest) + index + src->size,
+		string_begin(dest) + index,
+		endsize
+	);
+
+	memcpy(string_begin(dest) + index, string_begin(src), src->size);
+
+	return dest;
+}
 
 
 /* Internals */
@@ -157,6 +196,8 @@ void string_downscale(string_t * s) {
 
 
 
+
+/* debug */
 
 #ifndef NDEBUG
 
