@@ -6,11 +6,11 @@
 #include <string_t.h>
 
 
-extern void * node_simple_destroy_hook(node_t * node);
-extern void * node_string_copy_hook(node_t * dest, node_t * src);
+void * node_simple_destroy_hook(node_t * node);
 
 
+node_t * string_node_create(string_t * str);
 void * string_node_destroy_hook(node_t * node);
-void * string_copy_hook(node_t * n1, node_t *n2);
+void * string_node_copy_hook(node_t * n1, node_t * n2);
 
 #endif

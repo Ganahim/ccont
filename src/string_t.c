@@ -58,6 +58,7 @@ string_t * string_create_empty() {
 void string_destroy(string_t * s) {
 	assert(s != NULL);
 	FREE(--s->begin);
+	FREE(s);
 }
 
 

@@ -14,20 +14,22 @@
 void * print_node(node_t * node, void * arg, size_t level);
 
 
+size_t compute_min_capacity(size_t size) {
+	size_t n = 1;
+	while(n < size) {
+		n <<= 1;
+	}
+
+	return n;
+}
 
 
 
 int main()
 {
-	string_t * s = string_create("asdf");
-	// node_t * proto = node_create("asd");
-	//
-	//
-	//
-	// node_destroy(proto);
+	printf("%zu\n", compute_min_capacity(65));
 
-	string_destroy(s);
-	debug_print_alloc_report();
+	debug_check_diff();
 	return 0;
 }
 

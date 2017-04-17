@@ -19,23 +19,19 @@ void * node_simple_destroy_hook(node_t * node) {
 }
 
 
-/* A pre-defined copy hook for null terminated strings. */
-void * node_string_copy_hook(node_t * dest, node_t * src) {
-	assert(src != NULL);
-	assert(dest != NULL);
-	FUNC_DEBUG("");
 
-	size_t n = strlen((char *)src->data);
-	char * dest_str = ALLOC(n + 1);
-	strcpy(dest_str, (char *)src->data);
 
-	dest->data = dest_str;
-	return NULL;
+
+
+node_t * string_node_create(string_t * str) {
+	assert(str != NULL);
+
+	node_t * p = node_create(str);
+	p->copy_hook = NODE_CALLBACK_T(string_node_copy_hook);
+	p->destroy_hook = string_node_destroy_hook;
+
+	return p;
 }
-
-
-
-
 
 void * string_node_destroy_hook(node_t * node) {
 	assert(node != NULL);
@@ -45,7 +41,7 @@ void * string_node_destroy_hook(node_t * node) {
 	return NULL;
 }
 
-void * string_copy_hook(node_t * n1, node_t *n2) {
+void * string_node_copy_hook(node_t * n1, node_t * n2) {
 	assert(n1 != NULL);
 	assert(n2 != NULL);
 	FUNC_DEBUG("");
