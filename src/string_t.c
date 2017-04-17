@@ -12,7 +12,7 @@
 
 
 
-string_t * string_new(const char * str) {
+string_t * string_create(const char * str) {
 	assert(str != NULL);
 
 	string_t * s = ALLOC(sizeof(string_t));
@@ -36,7 +36,7 @@ string_t * string_new(const char * str) {
 }
 
 
-string_t * string_new_empty() {
+string_t * string_create_empty() {
 	string_t * s = ALLOC(sizeof(string_t));
 	memset(s, 0, sizeof(string_t));
 
@@ -55,7 +55,7 @@ string_t * string_new_empty() {
 }
 
 
-void string_delete(string_t * s) {
+void string_destroy(string_t * s) {
 	assert(s != NULL);
 	FREE(--s->begin);
 }
@@ -133,7 +133,7 @@ string_t * string_substr(const string_t * s, size_t index, size_t len) {
 	assert(s != NULL);
 	assert((index + len) <= s->size);
 
-	string_t * d = string_new_empty();
+	string_t * d = string_create_empty();
 	string_resize(d, len, 0);
 
 	memcpy(string_begin(d), (string_begin(s) + index), len);

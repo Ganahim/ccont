@@ -6,3 +6,14 @@ TODO:
 - function to get list of descendants
 - 'rotate' children
 - replace range
+
+
+
+
+
+OBJECT {
+properties:
+	callback_table = {{COND1, ACTION1}, {COND2, ACTION2}, ...}
+
+functions:
+}

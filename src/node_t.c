@@ -139,7 +139,7 @@ node_t * node_attach_after(node_t * node1, node_t * node2) {
 /* - Return a shallow copy of node.
 	- The 'data' member of the returned node will point to the same resource as src.
 	- */
-node_t * node_copy(node_t * src) {
+node_t * node_copy_shallow(node_t * src) {
 	assert(src != NULL);
 	incNodeCount();
 
@@ -153,7 +153,7 @@ node_t * node_copy(node_t * src) {
 }
 
 
-node_t * node_copy_deep(node_t * src) {
+node_t * node_copy(node_t * src) {
 	assert(src != NULL);
 	incNodeCount();
 
@@ -236,7 +236,7 @@ void * _pred_wrapper(node_t * node, void * arg, size_t level) {
 	pred_container_t * cont = arg;
 
 	if(cont->pred(node, cont->arg) != 0) {
-		nodelist_push_back(cont->list, node_copy(node));
+		nodelist_push_back(cont->list, node_copy_shallow(node));
 	}
 
 	return NULL;

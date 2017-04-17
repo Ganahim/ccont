@@ -14,19 +14,20 @@ LDFLAGS += `pkg-config --libs-only-L --libs-only-other $(REQUIRES)`
 endif
 
 
+
+
+
 libname-base := containers
 libname-shared := lib$(libname-base).so
 libname-static := lib$(libname-base).a
 
 
-# c-source-ignore := src/main.c
-
 c-source-files := $(subst src/main.c,,$(wildcard src/*.c))
 c-source-stems := $(notdir $(basename $(c-source-files)))
-c-object-files := $(foreach stem, $(c-source-stems), build/$(stem).o)
+c-object-files := $(foreach stem, $(c-source-stems), build/fpic/$(stem).o)
 
-c-object-rule = build/$(shell $(CC) -I./include -MM -MG $(1) | sed 's/\\//g')
-c-object-rules = $(foreach src, $(c-source-files), $(eval $(call c-object-rule, $(src))))
+c-object-rule = build/fpic/$(shell $(CC) -I./include -MM -MG $(1) | sed 's/\\//g')
+c-object-rules = $(foreach srcfile, $(c-source-files), $(eval $(call c-object-rule, $(srcfile))))
 
 
 
@@ -82,7 +83,7 @@ endef
 
 
 # Pattern rules
-build/%.o: src/%.c
+build/fpic/%.o: src/%.c
 	$(CC) $(CFLAGS) $(OBJFLAGS) $< -o $@
 
 #----------------------------------------------------------------------------------------------
@@ -117,7 +118,7 @@ uninstall:
 	rm -f .install_log
 
 clean:
-	rm -f build/*.o lib/lib*.a lib/lib*.so*
+	rm -f build/fpic/*.o lib/lib*.a lib/lib*.so*
 
 debug:
 	@echo $(c-source-files)

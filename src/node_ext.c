@@ -32,3 +32,25 @@ void * node_string_copy_hook(node_t * dest, node_t * src) {
 	dest->data = dest_str;
 	return NULL;
 }
+
+
+
+
+
+void * string_node_destroy_hook(node_t * node) {
+	assert(node != NULL);
+	FUNC_DEBUG("destroying '%s'", string_begin((string_t *)node->data));
+
+	string_destroy((string_t *)node->data);
+	return NULL;
+}
+
+void * string_copy_hook(node_t * n1, node_t *n2) {
+	assert(n1 != NULL);
+	assert(n2 != NULL);
+	FUNC_DEBUG("");
+
+	string_t * src = n2->data;
+	n1->data = string_substr(src, 0, src->size);
+	return NULL;
+}

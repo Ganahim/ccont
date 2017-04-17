@@ -7,4 +7,15 @@
 #endif
 
 
+
+extern long debug_malloc_count;
+extern long debug_realloc_count;
+extern long debug_free_count;
+
+void * debug_alloc(size_t n);
+void * debug_realloc(void * p, size_t n);
+void debug_free(void * p);
+
+void debug_print_alloc_report();
+
 #endif

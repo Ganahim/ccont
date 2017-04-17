@@ -111,14 +111,14 @@ nodelist_t * nodelist_join(nodelist_t * l1, nodelist_t * l2) {
 
 
 /* - Return a shallow copy of list.
-	- See 'node_copy()' in file 'node_t.c' for more details. */
+	- See 'node_copy_shallow()' in file 'node_t.c' for more details. */
 nodelist_t * nodelist_copy(nodelist_t * src) {
 	assert(src != NULL);
 
 	nodelist_t * dest = nodelist_create();
 
 	for(node_t * p = nodelist_begin(src); p != nodelist_end(src); p = p->next) {
-		nodelist_push_back(dest, node_copy(p));
+		nodelist_push_back(dest, node_copy_shallow(p));
 	}
 
 	return dest;
@@ -132,7 +132,7 @@ nodelist_t * nodelist_copy_deep(nodelist_t * src) {
 	nodelist_t * dest = nodelist_create();
 
 	for(node_t * p = nodelist_begin(src); p != nodelist_end(src); p = p->next) {
-		nodelist_push_back(dest, node_copy_deep(p));
+		nodelist_push_back(dest, node_copy(p));
 	}
 
 	return dest;

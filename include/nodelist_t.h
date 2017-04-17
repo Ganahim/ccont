@@ -1,6 +1,7 @@
 #ifndef _NODELIST_T_H
 #define _NODELIST_T_H
 
+#include <containers_common.h>
 #include <node_types.h>
 
 

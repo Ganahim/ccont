@@ -18,8 +18,8 @@ node_t * node_attach_before(node_t * node1, node_t * node2);
 node_t * node_attach_after(node_t * node1, node_t * node2);
 
 
+node_t * node_copy_shallow(node_t * src);
 node_t * node_copy(node_t * src);
-node_t * node_copy_deep(node_t * src);
 void node_swap(node_t * a, node_t * b);
 node_t * node_find_root(node_t * node);
 nodelist_t * node_search(node_t * node, node_search_predicate_t pred, void * arg);

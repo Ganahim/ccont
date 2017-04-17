@@ -49,9 +49,6 @@ $(PROGRAM): $(c-object-list)
 	$(CC) $(CFLAGS) $(LDFLAGS) $(c-object-list) -o $(PROGRAM) $(LDLIBS)
 
 
-build/scanner.o: build/scanner.c
-build/scanner.c: src/scanner.lex
-
 $(c-object-rules)
 
 
@@ -60,7 +57,7 @@ $(c-object-rules)
 #-------------------------------------------------------------------------------------
 .PHONY: clean debug
 clean:
-	rm -f build/* tmp/* $(PROGRAM)
+	rm -f build/*.o tmp/* $(PROGRAM)
 
 debug:
 	@echo $(c-source-list)

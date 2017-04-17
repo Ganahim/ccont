@@ -39,9 +39,9 @@ typedef struct _STRING_SPLIT_RESULT_T {
 
 
 
-string_t * string_new(const char * str);
-string_t * string_new_empty();
-void string_delete(string_t * s);
+string_t * string_create(const char * str);
+string_t * string_create_empty();
+void string_destroy(string_t * s);
 
 void string_resize(string_t * s, size_t n, char fill);
 
