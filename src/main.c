@@ -3,55 +3,60 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <stddef.h>
-#include <stdint.h>
 
 #include <debug.h>
-
 #include <node.h>
 #include <string_t.h>
 
+void * print_string_node(node_t * node, void * arg, size_t level);
+void * f1(node_t * node, void * arg, size_t level);
+void * f2(node_t * node, void * arg, size_t level);
 
-void * print_node(node_t * node, void * arg, size_t level);
 
-
-size_t compute_min_capacity(size_t size) {
-	size_t n = 1;
-	while(n < size) {
-		n <<= 1;
-	}
-
-	return n;
-}
 
 
 
 int main()
 {
-	printf("%zu\n", compute_min_capacity(65));
+	node_t * root = string_node_create("root");
 
+	
+
+	node_destroy(root);
 	debug_check_diff();
 	return 0;
 }
 
 
 
+void * print_string_node(node_t * node, void * arg, size_t level) {
+	assert(node != NULL);
 
-
-
-
-
-
-
-void * print_node(node_t * node, void * arg, size_t level) {
-
-	for(size_t i = 0; i < level; i++)
+	for(size_t i = 0; i < level; i++) {
 		fprintf(stderr, "   ");
-
-	if(node->data != NULL) {
-		fprintf(stderr, "%s", (char *)node->data);
 	}
 
+	fprintf(stderr, "%s", string_begin((string_t *)node->data));
 	fputc('\n', stderr);
+	return NULL;
+}
 
+
+
+void * f1(node_t * node, void * arg, size_t level) {
+	node_append_child(node, string_node_create("a"));
+	node_append_child(node, string_node_create("b"));
+	node_append_child(node, string_node_create("c"));
+	return NULL;
+}
+
+void * f2(node_t * node, void * arg, size_t level) {
+	node_append_child(node, string_node_create("1"));
+	node_append_child(node, string_node_create("2"));
+	node_append_child(node, string_node_create("3"));
+
+	for(node_t * p = nodelist_begin(node->children); p != nodelist_end(node->children); p = p->next) {
+		string_insert((string_t *)p->data, 0, (string_t *)node->data);
+	}
 	return NULL;
 }

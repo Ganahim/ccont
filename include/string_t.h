@@ -11,17 +11,19 @@
 */
 
 
-
-#define MIN_CAPACITY 256
-
+/* Direct pointer access macros.
+	Any pointer returned from one of the following
+	macros may be invalidated by calls to any function
+	that modifies the underlying string_t object. */
 #define string_begin(P)			((P)->begin)
 #define string_end(P)			((P)->begin + (P)->size)
 #define string_rbegin(P)		(string_end(P) - 1)
 #define string_rend(P)			(string_begin(P) - 1)
 
+/* Return first and last characters, respectively. */
 #define string_front(P)			(*string_begin(P))
 #define string_back(P)			(*string_rbegin(P))
-;
+#define dummy
 
 
 typedef struct _STRING_T {
@@ -31,18 +33,16 @@ typedef struct _STRING_T {
 } string_t;
 
 
-typedef struct _STRING_SPLIT_RESULT_T {
-	string_t * left;
-	string_t * delim;
-	string_t * right;
-} string_split_result_t;
-
 
 
 string_t * string_create(const char * str);
 string_t * string_create_empty();
 void string_destroy(string_t * s);
 
+string_t * string_copy(string_t * src);
+
+
+void string_change_capacity(string_t * s, size_t n);
 void string_resize(string_t * s, size_t n, char fill);
 
 string_t * string_append(string_t * dest, string_t * src);
@@ -53,6 +53,7 @@ string_t * string_substr(const string_t * s, size_t index, size_t len);
 
 string_t * string_erase(string_t * s, size_t index, size_t len);
 string_t * string_insert(string_t * dest, size_t index, string_t * src);
+string_t * string_insert_sz(string_t * dest, size_t index, const char * src);
 
 
 
@@ -61,10 +62,6 @@ string_t * string_insert(string_t * dest, size_t index, string_t * src);
 #define string_reserved(P)		((P)->capacity - 2)
 #define string_unused(P)		(string_reserved(P) - (P)->size)
 #define string_alloc_addr(P)	(string_begin(P) - 1)
-
-void string_upscale(string_t * s);
-void string_downscale(string_t * s);
-
 
 
 /* Debug */

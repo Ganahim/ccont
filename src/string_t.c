@@ -5,11 +5,26 @@
 #include <debug.h>
 #include <string_t.h>
 
+
+/* The absolute minimum capacity of the underlying buffer.
+	The capacity will not go under this, even if it could. */
+#define START_CAPACITY 64
+
+
+/* Quick convenience macros */
 #define MAX(A, B)			((A) > (B) ? (A) : (B))
 #define MIN(A, B)			((A) < (B) ? (A) : (B))
 #define ABSDIFF(A, B)	(MAX(A, B) - MIN(A, B))
 
 
+/* Compute minimum capacity for a given amount of bytes */
+static size_t compute_min_capacity(size_t size) {
+	size_t n = START_CAPACITY;
+	while(n < size) {
+		n <<= 1;
+	}
+	return n;
+}
 
 
 string_t * string_create(const char * str) {
@@ -19,11 +34,7 @@ string_t * string_create(const char * str) {
 	memset(s, 0, sizeof(string_t));
 
 	s->size = strlen(str);
-	s->capacity = 1;
-
-	while(s->capacity < MAX(MIN_CAPACITY, s->size+2)) {
-		s->capacity <<= 1;
-	}
+	s->capacity = compute_min_capacity(s->size + 2);
 
 	s->begin = ALLOC(s->capacity);
 	s->begin++;
@@ -40,10 +51,7 @@ string_t * string_create_empty() {
 	string_t * s = ALLOC(sizeof(string_t));
 	memset(s, 0, sizeof(string_t));
 
-	s->capacity = 1;
-	while(s->capacity < MAX(MIN_CAPACITY, s->size+2)) {
-		s->capacity <<= 1;
-	}
+	s->capacity = compute_min_capacity(s->size + 2);
 
 	s->begin = ALLOC(s->capacity);
 	s->begin++;
@@ -62,22 +70,39 @@ void string_destroy(string_t * s) {
 }
 
 
+string_t * string_copy(string_t * src) {
+	assert(src != NULL);
+	return string_create(string_begin(src));
+}
+
+
+
+void string_change_capacity(string_t * s, size_t n) {
+	assert(s != NULL);
+
+	s->capacity = n;
+	s->begin--;
+	s->begin = REALLOC(s->begin, s->capacity);
+	s->begin++;
+}
+
 
 void string_resize(string_t * s, size_t n, char fill) {
 	assert(s != NULL);
 
-	if(n > s->size) {
-		while(n > string_unused(s))
-			string_upscale(s);
-
-		memset(string_end(s), fill, (n - s->size));
-	}
-	else {
-		while((((s->capacity >> 1) - 2) >= n) && ((s->capacity >> 1) >= MIN_CAPACITY))
-			string_downscale(s);
-	}
+	size_t oldsize = s->size;
 
 	s->size = n;
+	size_t cap_needed = compute_min_capacity(s->size + 2);
+
+	if(s->capacity != cap_needed) {
+		string_change_capacity(s, cap_needed);
+	}
+
+	if(s->size > oldsize) {
+		memset(string_begin(s) + oldsize, fill, s->size - oldsize);
+	}
+
 	*string_end(s) = 0;
 }
 
@@ -95,14 +120,10 @@ string_t * string_append_sz(string_t * s, const char * sz) {
 	assert(sz != NULL);
 
 	size_t len = strlen(sz);
+	size_t oldsize = s->size;
 
-	// Upscale as much as needed to accommodate sz
-	while(len > string_unused(s)) {
-		string_upscale(s);
-	}
-
-	memcpy(string_end(s), sz, len);
-	s->size += len;
+	string_resize(s, s->size + len, 0);
+	memcpy(string_begin(s) + oldsize, sz, len);
 	*string_end(s) = 0;
 
 	return s;
@@ -116,13 +137,10 @@ string_t * string_append_sz_n(string_t * s, const char * sz, size_t n) {
 	char * z = memchr(sz, 0, n);
 	size_t len = (z == NULL ? n : (z - sz));
 
+	size_t oldsize = s->size;
+	string_resize(s, s->size + len, 0);
 
-	while(len > string_unused(s)) {
-		string_upscale(s);
-	}
-
-	memcpy(string_end(s), sz, n);
-	s->size += len;
+	memcpy(string_begin(s) + oldsize, sz, n);
 	*string_end(s) = 0;
 
 	return s;
@@ -155,8 +173,10 @@ string_t * string_erase(string_t * s, size_t index, size_t len) {
 }
 
 
+/* Insert string 'src' into 'dest' starting from position 'index'. */
 string_t * string_insert(string_t * dest, size_t index, string_t * src) {
 	assert(dest != NULL);
+	assert(src != NULL);
 
 	size_t endsize = dest->size - index;
 
@@ -173,33 +193,28 @@ string_t * string_insert(string_t * dest, size_t index, string_t * src) {
 }
 
 
-/* Internals */
 
-// Scale up capacity
-void string_upscale(string_t * s) {
-	assert(s != NULL);
+string_t * string_insert_sz(string_t * dest, size_t index, const char * src) {
+	assert(dest != NULL);
+	assert(src != NULL);
 
-	s->capacity <<= 1;
-	s->begin--;
-	s->begin = REALLOC(s->begin, s->capacity);
-	s->begin++;
+	size_t srcsize = strlen(src);
+	size_t endsize = dest->size - index;
+
+	string_resize(dest, dest->size + srcsize, ' ');
+	memmove(
+		string_begin(dest) + index + srcsize,
+		string_begin(dest) + index,
+		endsize
+	);
+
+	memcpy(string_begin(dest) + index, src, srcsize);
+
+	return dest;
 }
-
-void string_downscale(string_t * s) {
-	assert(s != NULL);
-	assert(s->capacity >= MIN_CAPACITY);
-
-	s->capacity >>= 1;
-	s->begin--;
-	s->begin = REALLOC(s->begin, s->capacity);
-	s->begin++;
-}
-
-
 
 
 /* debug */
-
 #ifndef NDEBUG
 
 void string_debug(string_t * s) {
@@ -222,5 +237,8 @@ void string_debug(string_t * s) {
 
 
 
+/* Shouldn't need these anywhere else */
 #undef MIN
 #undef MAX
+#undef ABSDIFF
+#undef START_CAPACITY

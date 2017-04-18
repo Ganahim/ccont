@@ -7,6 +7,7 @@
 #include <node_types.h>
 #include <node_t.h>
 #include <nodelist_t.h>
+#include <node_algorithm.h>
 #include <node_ext.h>
 
 
