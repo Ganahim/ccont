@@ -9,8 +9,13 @@
 void * node_simple_destroy_hook(node_t * node);
 
 
+/* string_t extensions */
 node_t * string_node_create(const char * str);
 void * string_node_destroy_hook(node_t * node);
 void * string_node_copy_hook(node_t * n1, node_t * n2);
+
+
+
+
 
 #endif

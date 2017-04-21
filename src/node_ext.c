@@ -3,7 +3,7 @@
 #include <assert.h>
 
 #include <node_ext.h>
-
+#include <string_t.h>
 
 /* A pre-defined destroy hook that checks whether 'data' is NULL, and if not, calls FREE on it. */
 void * node_simple_destroy_hook(node_t * node) {
