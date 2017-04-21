@@ -1,7 +1,7 @@
 
 REQUIRES :=
 CC := gcc
-CFLAGS := -I./include
+CFLAGS := -I./include -D NDEBUG
 LDFLAGS := -shared
 LDLIBS :=
 OBJFLAGS := -c -fPIC
