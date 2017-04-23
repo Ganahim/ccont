@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include <debug.h>
 
 
@@ -28,7 +29,7 @@ void debug_free(void * p) {
 
 
 void debug_print_alloc_report() {
-	FUNC_DEBUG("");
+	// FUNC_DEBUG("");
 
 	fprintf(stderr, "\tmalloc count: %zu\n", debug_malloc_count);
 	fprintf(stderr, "\tfree count: %zu\n", debug_free_count);

@@ -24,6 +24,10 @@ void ptr_stack_pop(ptr_stack_t * stack);
 void * ptr_stack_back(ptr_stack_t * stack);
 
 
+#define ptr_stack_vpush(...)	_ptr_stack_vpush(__VA_ARGS__, NULL)
+void _ptr_stack_vpush(ptr_stack_t * stack, void * p1, ...);
+
+
 void ptr_stack_debug(ptr_stack_t * stack);
 
 #endif

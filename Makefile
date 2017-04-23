@@ -3,9 +3,9 @@
 # .SUFFIXES: .c .o .h .lex
 
 
-REQUIRES := 
+REQUIRES :=
 CC := gcc
-CFLAGS := -std=c11 -I./include -I./build
+CFLAGS := -std=c11 -I./include -I./build 
 LDLIBS :=
 LDFLAGS :=
 PROGRAM := test

@@ -2,11 +2,12 @@
 #include <string.h>
 #include <stddef.h>
 #include <assert.h>
+#include <stdarg.h>
 
 #include <debug.h>
 #include <ptr_stack_t.h>
-#define DEFAULT_CAPACITY 256
 
+#define DEFAULT_CAPACITY 256
 
 
 ptr_stack_t * ptr_stack_create() {
@@ -63,6 +64,26 @@ void * ptr_stack_back(ptr_stack_t * stack) {
 
 
 
+
+void _ptr_stack_vpush(ptr_stack_t * stack, void * p1, ...) {
+	assert(stack != NULL);
+	assert(p1 != NULL);
+
+	va_list ap;
+	va_start(ap, p1);
+
+	void * p = p1;
+	while(p != NULL) {
+		ptr_stack_push(stack, p);
+		p = va_arg(ap, void *);
+	}
+
+	va_end(ap);
+}
+
+
+
+
 #ifndef NDEBUG
 #include <stdio.h>
 
@@ -75,6 +96,12 @@ void ptr_stack_debug(ptr_stack_t * stack) {
 	fprintf(stderr, "\tcount: %zu\n", stack->count);
 	fprintf(stderr, "\tsize: %zu\n", ptr_stack_size(stack));
 	fprintf(stderr, "\tcapacity: %zu\n", stack->capacity);
+
+	fputc('\n', stderr);
+
+	for(void ** p = ptr_stack_begin(stack); p != ptr_stack_end(stack); p++) {
+		fprintf(stderr, "\t%s\n", (char *)*p);
+	}
 
 	fputc('\n', stderr);
 }
