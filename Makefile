@@ -5,9 +5,9 @@
 
 REQUIRES :=
 CC := gcc
-CFLAGS := -std=c11 -I./include -I./build 
+CFLAGS := -std=c11 -I./include -I./build -D_POSIX_C_SOURCE=199309L -D_GNU_SOURCE
 LDLIBS :=
-LDFLAGS :=
+LDFLAGS := -pthread
 PROGRAM := test
 
 empty :=

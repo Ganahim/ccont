@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <assert.h>
 #include <debug.h>
 
 
@@ -36,5 +37,25 @@ void debug_print_alloc_report() {
 	fprintf(stderr, "\tdiff: %zu\n", debug_malloc_count - debug_free_count);
 
 	fprintf(stderr, "\trealloc count: %zu\n", debug_realloc_count);
+	fputc('\n', stderr);
+}
+
+
+
+void _memprint(void * data, size_t size) {
+	assert(data != NULL);
+
+	char * p = data;
+	char * end = p + size;
+
+	fprintf(stderr, "\e[92m:|\e[0m");
+	while(p != end) {
+		if(*p == 0)
+			fprintf(stderr, "\e[91m%c\e[0m", '.');
+		else
+			fputc(*p, stderr);
+		p++;
+	}
+	fprintf(stderr, "\e[92m|:\e[0m");
 	fputc('\n', stderr);
 }
