@@ -12,11 +12,12 @@
 typedef struct _BUFFER_T {
 	size_t size;
 	size_t capacity;
+	size_t min_capacity;
 	char * begin;
 } buffer_t;
 
 
-buffer_t * buffer_create(size_t size);
+buffer_t * buffer_create(size_t size, size_t minCapacity);
 void buffer_destroy(buffer_t * buf);
 void buffer_resize(buffer_t * buf, size_t size);
 

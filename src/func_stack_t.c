@@ -1,20 +1,27 @@
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
-#include <buffer_t.h>
 #include <func_stack_t.h>
 
+#define MIN_FUNC_STACK_CAPACITY 256
 
 func_stack_t * func_stack_create() {
 	func_stack_t * stack = ALLOC(sizeof(func_stack_t));
 	memset(stack, 0, sizeof(func_stack_t));
-	stack->buffer = buffer_create(256);
+
+	stack->capacity = MIN_FUNC_STACK_CAPACITY;
+	stack->begin = ALLOC(stack->capacity);
 	return stack;
 }
 
 void func_stack_destroy(func_stack_t * stack) {
 	assert(stack != NULL);
-	buffer_destroy(stack->buffer);
+
+	if(stack->on_destroy != NULL) {
+		stack->on_destroy(stack);
+	}
+
+	FREE(stack->begin);
 	FREE(stack);
 }
 
@@ -22,8 +29,11 @@ void func_stack_push(func_stack_t * stack, function_t func) {
 	assert(stack != NULL);
 	assert(func != NULL);
 
-	size_t sizeNeeded = (stack->count + 1) * sizeof(function_t);
-	buffer_resize(stack->buffer, sizeNeeded);
+	size_t capNeeded = compute_capacity((stack->count + 1) * sizeof(function_t), MIN_FUNC_STACK_CAPACITY);
+	if(stack->capacity != capNeeded) {
+		stack->capacity = capNeeded;
+		stack->begin = REALLOC(stack->begin, stack->capacity);
+	}
 
 	*func_stack_end(stack) = func;
 	stack->count++;
@@ -31,31 +41,22 @@ void func_stack_push(func_stack_t * stack, function_t func) {
 
 function_t func_stack_pop(func_stack_t * stack) {
 	assert(stack != NULL);
+	assert(stack->count > 0);
 
 	function_t f = func_stack_back(stack);
 	stack->count--;
 
-	size_t sizeNeeded = (stack->count) * sizeof(function_t);
-	buffer_resize(stack->buffer, sizeNeeded);
+	size_t capNeeded = compute_capacity(stack->count * sizeof(function_t), MIN_FUNC_STACK_CAPACITY);
+	if(stack->capacity != capNeeded) {
+		stack->capacity = capNeeded;
+		stack->begin = REALLOC(stack->begin, stack->capacity);
+	}
 
 	return f;
 }
 
 function_t func_stack_back(func_stack_t * stack) {
 	assert(stack != NULL);
+	assert(stack->count > 0);
 	return *(func_stack_end(stack) - 1);
-}
-
-
-void func_stack_debug(func_stack_t * stack) {
-	assert(stack != NULL);
-	FUNC_DEBUG("");
-
-	fprintf(stderr, "\tbegin: %p\n", func_stack_begin(stack));
-	fprintf(stderr, "\tend: %p\n", func_stack_end(stack));
-	fprintf(stderr, "\tcount: %zu\n", stack->count);
-	fprintf(stderr, "\tsize: %zu\n", stack->buffer->size);
-	fprintf(stderr, "\tcapacity: %zu\n", stack->buffer->capacity);
-
-	fputc('\n', stderr);
 }

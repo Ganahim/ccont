@@ -4,20 +4,35 @@
 #include <string.h>
 #include <stdarg.h>
 
-#include <buffer_t.h>
-#include <util.h>
-#include <ptr_stack_t.h>
 #include <func_stack_t.h>
+#include <ptr_stack_t.h>
+#include <buffer_t.h>
+
+void f1() { printf("f1\n"); }
+void f2() { printf("f2\n"); }
+void f3() { printf("f3\n"); }
 
 
 int main()
 {
-	ptr_stack_t * s = ptr_stack_create();
+	buffer_t * buf = buffer_create(0, 256);
 
-	for(size_t i = 0; i < 1000000; i++) {
-		ptr_stack_push(s, "nigger");
+	for(size_t i = 0; i < 50000; i++) {
+		buffer_resize(buf, buf->size + 8);
 	}
 
-	ptr_stack_destroy(s);
+	// buffer_resize(buf, sizeof(function_t) * 3);
+	// function_t * p = buffer_begin(buf);
+	// *p = f1; p++;
+	// *p = f2; p++;
+	// *p = f3; p++;
+	//
+	// for(function_t * ppf = buffer_begin(buf); ppf != buffer_end(buf); ppf++) {
+	// 	(*ppf)();
+	// }
+
+
+	buffer_debug(buf);
+	buffer_destroy(buf);
 	return 0;
 }
