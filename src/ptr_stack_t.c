@@ -6,15 +6,16 @@
 
 #include <debug.h>
 #include <ptr_stack_t.h>
+#include <util.h>
 
-#define DEFAULT_CAPACITY 256
+#define PTR_STACK_DEFAULT_CAPACITY 256
 
 
 ptr_stack_t * ptr_stack_create() {
 	ptr_stack_t * stack = ALLOC(sizeof(ptr_stack_t));
 	memset(stack, 0, sizeof(ptr_stack_t));
 
-	stack->capacity = DEFAULT_CAPACITY;
+	stack->capacity = PTR_STACK_DEFAULT_CAPACITY;
 	stack->begin = ALLOC(stack->capacity);
 
 	return stack;
@@ -30,7 +31,7 @@ void ptr_stack_destroy(ptr_stack_t * stack) {
 void ptr_stack_push(ptr_stack_t * stack, void * ptr) {
 	assert(stack != NULL);
 
-	size_t capNeeded = compute_capacity(ptr_stack_size(stack), DEFAULT_CAPACITY);
+	size_t capNeeded = compute_capacity(ptr_stack_size(stack), PTR_STACK_DEFAULT_CAPACITY);
 	if(stack->capacity != capNeeded) {
 		stack->capacity = capNeeded;
 		stack->begin = REALLOC(stack->begin, stack->capacity);
@@ -47,7 +48,7 @@ void ptr_stack_pop(ptr_stack_t * stack) {
 
 	stack->count--;
 
-	size_t capNeeded = compute_capacity(ptr_stack_size(stack), DEFAULT_CAPACITY);
+	size_t capNeeded = compute_capacity(ptr_stack_size(stack), PTR_STACK_DEFAULT_CAPACITY);
 	if(stack->capacity != capNeeded) {
 		stack->capacity = capNeeded;
 		stack->begin = REALLOC(stack->begin, stack->capacity);

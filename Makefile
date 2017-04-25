@@ -7,7 +7,7 @@ REQUIRES :=
 CC := gcc
 CFLAGS := -std=c11 -I./include -I./build -D_POSIX_C_SOURCE=199309L -D_GNU_SOURCE
 LDLIBS :=
-LDFLAGS := -pthread
+LDFLAGS :=
 PROGRAM := test
 
 empty :=

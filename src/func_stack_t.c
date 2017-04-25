@@ -2,6 +2,7 @@
 #include <string.h>
 #include <assert.h>
 #include <func_stack_t.h>
+#include <util.h>
 
 #define MIN_FUNC_STACK_CAPACITY 256
 

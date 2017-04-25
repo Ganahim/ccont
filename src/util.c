@@ -2,10 +2,20 @@
 #include <string.h>
 #include <assert.h>
 #include <stdarg.h>
+#include <stdalign.h>
 #include <util.h>
 
 #include <debug.h>
 
+
+size_t compute_capacity(size_t size, size_t min) {
+	size_t n = (min > 0 ? min : 1);
+	while(n <= size) {
+		n <<= 1;
+	}
+
+	return n;
+}
 
 
 /* Concatenate an arbitrary number of memory blocks into
@@ -46,7 +56,7 @@ void * _memcat(void * dest, void * p1, size_t n1, ...) {
 }
 
 
-void _mempluck(void * src, void * p1, size_t n1, ...) {
+void * _mempluck(void * src, void * p1, size_t n1, ...) {
 	assert(src != NULL);
 
 	char * s = src;
@@ -66,6 +76,7 @@ void _mempluck(void * src, void * p1, size_t n1, ...) {
 	}
 
 	va_end(ap);
+	return s;
 }
 
 
@@ -109,8 +120,8 @@ void * _valloc(void ** p1, size_t n1, ...) {
 
 
 	/* Allocate enough space for all pointers */
-	size_t cap = compute_capacity(total, 0);
-	char * buf = malloc(cap);
+	size_t cap = compute_capacity(total, _Alignof(max_align_t));
+	char * buf = aligned_alloc(_Alignof(max_align_t), cap); //malloc(cap);
 
 	/* Loop vars */
 	p = p1;

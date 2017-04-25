@@ -14,7 +14,6 @@
 #endif
 
 
-size_t compute_capacity(size_t size, size_t min);
 
 
 #endif

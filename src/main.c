@@ -3,22 +3,14 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdarg.h>
-#include <time.h>
-#include <unistd.h>
-#include <pthread.h>
+#include <stdint.h>
+#include <stdalign.h>
 
-#include <debug.h>
-
-void msdelay(size_t n) {
-	struct timespec t = {0, n * (1000 * 1000)};
-	nanosleep(&t, NULL);
-}
-
-
-
+#include <util.h>
 
 int main()
 {
+
 
 	return 0;
 }
