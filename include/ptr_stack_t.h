@@ -1,6 +1,7 @@
 #ifndef _PTR_STACK_T_H
 #define _PTR_STACK_T_H
 
+#include <stdalign.h>
 #include <containers_common.h>
 
 
@@ -11,12 +12,13 @@
 typedef struct _PTR_STACK_T {
 	size_t count;
 	size_t capacity;
+	size_t min_capacity;
 	void ** begin;
 } ptr_stack_t;
 
 
 
-ptr_stack_t * ptr_stack_create();
+ptr_stack_t * ptr_stack_create(size_t count, size_t minCap);
 void ptr_stack_destroy(ptr_stack_t * stack);
 
 void ptr_stack_push(ptr_stack_t * stack, void * ptr);

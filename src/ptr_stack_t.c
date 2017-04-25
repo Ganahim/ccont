@@ -11,11 +11,12 @@
 #define PTR_STACK_DEFAULT_CAPACITY 256
 
 
-ptr_stack_t * ptr_stack_create() {
+ptr_stack_t * ptr_stack_create(size_t count, size_t minCap) {
 	ptr_stack_t * stack = ALLOC(sizeof(ptr_stack_t));
 	memset(stack, 0, sizeof(ptr_stack_t));
 
-	stack->capacity = PTR_STACK_DEFAULT_CAPACITY;
+	stack->min_capacity = minCap;
+	stack->capacity = compute_capacity(count * sizeof(void *), stack->min_capacity);
 	stack->begin = ALLOC(stack->capacity);
 
 	return stack;
@@ -31,12 +32,12 @@ void ptr_stack_destroy(ptr_stack_t * stack) {
 void ptr_stack_push(ptr_stack_t * stack, void * ptr) {
 	assert(stack != NULL);
 
-	size_t capNeeded = compute_capacity(ptr_stack_size(stack), PTR_STACK_DEFAULT_CAPACITY);
+	size_t sizeNeeded = ptr_stack_size(stack) + sizeof(void *);
+	size_t capNeeded = compute_capacity(sizeNeeded, stack->min_capacity);
+
 	if(stack->capacity != capNeeded) {
 		stack->capacity = capNeeded;
 		stack->begin = REALLOC(stack->begin, stack->capacity);
-
-		// FUNC_DEBUG("realloc");
 	}
 
 	*ptr_stack_end(stack) = ptr;
@@ -48,11 +49,10 @@ void ptr_stack_pop(ptr_stack_t * stack) {
 
 	stack->count--;
 
-	size_t capNeeded = compute_capacity(ptr_stack_size(stack), PTR_STACK_DEFAULT_CAPACITY);
+	size_t capNeeded = compute_capacity(ptr_stack_size(stack), stack->min_capacity);
 	if(stack->capacity != capNeeded) {
 		stack->capacity = capNeeded;
 		stack->begin = REALLOC(stack->begin, stack->capacity);
-		// FUNC_DEBUG("realloc");
 	}
 }
 
@@ -100,9 +100,9 @@ void ptr_stack_debug(ptr_stack_t * stack) {
 
 	fputc('\n', stderr);
 
-	for(void ** p = ptr_stack_begin(stack); p != ptr_stack_end(stack); p++) {
-		fprintf(stderr, "\t%s\n", (char *)*p);
-	}
+	// for(void ** p = ptr_stack_begin(stack); p != ptr_stack_end(stack); p++) {
+	// 	fprintf(stderr, "\t%s\n", (char *)*p);
+	// }
 
 	fputc('\n', stderr);
 }
