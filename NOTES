@@ -1,5 +1,5 @@
 
-TODO:
+>> TODO:
 - function for swapping node places				X
 - copying nodes (shallow & deep)
 - generic recursion functions						X
@@ -11,9 +11,40 @@ TODO:
 
 
 
-OBJECT {
-properties:
-	callback_table = {{COND1, ACTION1}, {COND2, ACTION2}, ...}
 
-functions:
-}
+
+
+
+
+
+
+
+
+
+
+
+>> Container model:
+	Properties:
+		- count
+		- size
+		- capacity
+		- min_capacity
+
+
+
+
+
+
+DEFINITIONS
+
+count
+	Number of elements currently in container
+
+size
+	Number of bytes currently in use (ie. count * element_size_in_bytes)
+
+capacity
+	Number of bytes allocated for use by the container. (capacity >= size)
+
+min_capacity
+	Minimum number of bytes to be held available for use by the container.

@@ -10,7 +10,7 @@
 
 size_t compute_capacity(size_t size, size_t min) {
 	size_t n = (min > 0 ? min : 1);
-	while(n <= size) {
+	while(n < size) {
 		n <<= 1;
 	}
 
@@ -99,7 +99,7 @@ void * _mempluck(void * src, void * p1, size_t n1, ...) {
 	and the argument list must end with the end markers 'NULL, 0'.
 	A macro is provided in 'util.h' which takes care of this automatically.
  */
-void * _valloc(void ** p1, size_t n1, ...) {
+void * _va_alloc(void ** p1, size_t n1, ...) {
 	assert(p1 != NULL);
 
 	void ** p = p1;
@@ -161,7 +161,7 @@ void _vfree(void * p1, ...) {
 
 
 
-/* Utilizes valloc() to dynamically allocate a structure holding a
+/* Utilizes va_alloc() to dynamically allocate a structure holding a
  	key-value pair.
 */
 kvpair_t * kvpair_create(const char * key, const char * value) {
@@ -171,7 +171,7 @@ kvpair_t * kvpair_create(const char * key, const char * value) {
 	kvpair_t * pair;
 	char * p1, * p2;
 
-	valloc(
+	va_alloc(
 		(void **)&pair, sizeof(kvpair_t),
 		(void **)&p1, strlen(key) + 1,
 		(void **)&p2, strlen(value) + 1

@@ -18,8 +18,8 @@ void * _mempluck(void * src, void * p1, size_t n1, ...);
 
 
 
-#define valloc(...)		_valloc(__VA_ARGS__, NULL, 0);
-void * _valloc(void ** p1, size_t n1, ...);
+#define va_alloc(...)		_va_alloc(__VA_ARGS__, NULL, 0);
+void * _va_alloc(void ** p1, size_t n1, ...);
 
 
 #define vfree(...)		_vfree(__VA_ARGS__, NULL);

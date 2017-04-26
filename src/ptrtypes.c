@@ -4,7 +4,7 @@
 
 #include <debug.h>
 #include <ptrtypes.h>
-#include <util.h>			// valloc()
+#include <util.h>			// va_alloc()
 
 
 
@@ -41,7 +41,7 @@ smart_ptr_t * smart_alloc(size_t n) {
 	smart_ptr_t * ptr;
 	void * data;
 
-	valloc((void **)&ptr, sizeof(smart_ptr_t), &data, n);
+	va_alloc((void **)&ptr, sizeof(smart_ptr_t), &data, n);
 
 	ptr->data = data;
 	ptr->refcount++;
