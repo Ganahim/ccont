@@ -14,6 +14,8 @@
 #include <stddef.h>
 #include <stdalign.h>
 #include <stdint.h>
+#include <stdlib.h>
+#include <string.h>
 #include <assert.h>
 
 /*** Types ***/
@@ -32,59 +34,5 @@ typedef void (*pfn_exception_handler_t)(void * self, int code);
 
 
 
-
-/* Primitive types */
-enum {
-	PRIM_VOID = 0,
-	PRIM_CHAR,
-	PRIM_SCHAR,
-	PRIM_SHORT,
-	PRIM_INT,
-	PRIM_LONG,
-	PRIM_LONGLONG,
-	PRIM_UCHAR,
-	PRIM_USHORT,
-	PRIM_UINT,
-	PRIM_ULONG,
-	PRIM_ULONGLONG,
-	PRIM_BOOL,
-	PRIM_FLOAT,
-	PRIM_DOUBLE,
-	PRIM_LONGDOUBLE,
-
-};
-
-#define MAKE_TYPE(PRIM, PTR_LEVEL)		((PRIM) | ((PTR_LEVEL & 0xF)) << 8)
-
-
-typedef union _PRIM_VALUE_T {
-	char c;
-
-	signed char sc;
-	short s;
-	int i;
-	long l;
-	long long ll;
-
-	unsigned char uc;
-	unsigned short us;
-	unsigned int ui;
-	unsigned long ul;
-	unsigned long long ull;
-	_Bool b;
-
-	float f;
-	double d;
-	long double ld;
-} prim_value_t;
-
-
-// typedef struct _PRIMITIVE_T {
-// 	uint16_t type;
-// 	union {
-// 		prim_value_t value;
-// 		void * ptr;
-// 	};
-// } primitive_t;
 
 #endif
